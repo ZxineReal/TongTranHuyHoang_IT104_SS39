@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { ClipLoader } from "react-spinners";
+import { HashLoader } from "react-spinners";
 
 const CLOUD_NAME = import.meta.env.VITE_CLOUD_NAME;
 const UPLOAD_PRESET = import.meta.env.VITE_UPLOAD_PRESET;
@@ -22,7 +22,8 @@ export default function UploadImages() {
     setPreviews(filesPreview);
   };
 
-  const handleUpload = async () => {
+  const handleUpload = async (e) => {
+    e.preventDefault();
     const urls = [];
 
     try {
@@ -54,11 +55,7 @@ export default function UploadImages() {
         <p className="text-2xl font-bold">Upload Images</p>
       </div>
       <div className="border w-[50%] p-5 bg-white">
-        {isLoading && (
-          <div className="flex justify-center items-center">
-            <ClipLoader />
-          </div>
-        )}
+       
 
         {previews.length > 0 && (
           <div className="flex flex-col justify-center items-center gap-3">
@@ -71,7 +68,10 @@ export default function UploadImages() {
           </div>
         )}
       </div>
-      <div className="w-[50%] flex justify-center items-center border bg-white p-3 gap-3">
+      <form
+        onSubmit={handleUpload}
+        className="w-[50%] flex justify-center items-center border bg-white p-3 gap-3"
+      >
         <input
           multiple
           className="border px-3 py-1 rounded"
@@ -79,13 +79,18 @@ export default function UploadImages() {
           type="file"
         />
         <button
+          type="submit"
           className="bg-blue-600 text-white rounded px-3 py-1"
-          onClick={handleUpload}
         >
           Upload
         </button>
-      </div>
+      </form>
       <div className="border w-[50%] flex flex-col justify-center items-center bg-white p-5">
+        {isLoading && (
+          <div className="flex justify-center items-center">
+            <HashLoader />
+          </div>
+        )}
         {imageUrls.length > 0 && (
           <div>
             <h3>Danh sách hình ảnh sau khi upload:</h3>
